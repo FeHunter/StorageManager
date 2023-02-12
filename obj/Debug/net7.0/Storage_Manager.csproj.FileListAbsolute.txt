@@ -1,0 +1,15 @@
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\bin\Debug\net7.0\Storage_Manager.exe
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\bin\Debug\net7.0\Storage_Manager.deps.json
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\bin\Debug\net7.0\Storage_Manager.runtimeconfig.json
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\bin\Debug\net7.0\Storage_Manager.dll
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\bin\Debug\net7.0\Storage_Manager.pdb
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.csproj.AssemblyReference.cache
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.AssemblyInfoInputs.cache
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.AssemblyInfo.cs
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.csproj.CoreCompileInputs.cache
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.dll
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\refint\Storage_Manager.dll
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.pdb
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\Storage_Manager.genruntimeconfig.cache
+C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager\obj\Debug\net7.0\ref\Storage_Manager.dll
