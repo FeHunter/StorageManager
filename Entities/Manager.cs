@@ -4,26 +4,33 @@ using System.Collections.Generic;
 using System.Globalization;
 
 namespace StorageManager {
+
     class Manager {
+
+        bool endProgram = false;
+
         public void StartToManager (){
             string rootPath = @"C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager";
             List<Product> productInfo = new List<Product>();
             Answer answer = new Answer();
 
             try {
-                if (VerifyForSavedProducts(rootPath) != 0){
-                    bool finish = false;
-                    while (!finish){
-                        System.Console.WriteLine("1 - Load Current Products\n2 - Create a new list");
-                        answer = Enum.Parse<Answer>(Console.ReadLine());
-                        finish = Enum.IsDefined<Answer>(answer);
+                while (!endProgram){
+                    if (VerifyForSavedProducts(rootPath) != 0){
+                        bool finish = false;
+                        while (!finish){
+                            System.Console.WriteLine();
+                            System.Console.WriteLine("1 - Load Current Products\n2 - Add new product");
+                            answer = Enum.Parse<Answer>(Console.ReadLine());
+                            finish = Enum.IsDefined<Answer>(answer);
+                        }
+                    }         
+                    if (answer == Answer.LoadData){
+                        LoadDataFromFile (rootPath, productInfo);
+                    }else {
+                        CreateFolderAndSummary (rootPath);
+                        WriteFile(productInfo, rootPath);
                     }
-                }         
-                if (answer == Answer.LoadData){
-                    LoadDataFromFile (rootPath, productInfo);
-                }else {
-                    CreateFolderAndSummary (rootPath);
-                    WriteFile(productInfo, rootPath);
                 }
             }
             catch (IOException e){
@@ -55,6 +62,7 @@ namespace StorageManager {
                     int quantity = int.Parse(Console.ReadLine());
 
                     productInfo.Add (new Product(name, price, quantity));
+                    System.Console.WriteLine();
                 }
 
                 foreach (Product p in productInfo){
@@ -68,6 +76,8 @@ namespace StorageManager {
                     sw.Write(productInfo.Count);
                     // System.Console.WriteLine("Has saved " + productInfo.Count + " Files.");
                 } 
+
+                AskToFinish ();
         }
 
         int VerifyForSavedProducts (string path){
@@ -92,6 +102,18 @@ namespace StorageManager {
             System.Console.WriteLine("Product: ");
             foreach (Product p in products){
                 System.Console.WriteLine(p);
+            }
+
+            AskToFinish ();
+        }
+
+        void AskToFinish (){
+            // Ask to finish
+            System.Console.WriteLine();
+            System.Console.WriteLine("Anything more? y/n");
+            char s = char.Parse(Console.ReadLine().ToLower());
+            if (s != 'y'){
+                endProgram = true;
             }
         }
     }
