@@ -8,20 +8,23 @@ namespace StorageManager {
         public void StartToManager (){
             string rootPath = @"C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager";
             List<Product> productInfo = new List<Product>();
+            Answer answer = new Answer();
 
             try {
-
-                if (CheckForItems(rootPath) != 0){
-                    System.Console.WriteLine("1 - Load Current Products\n2 - Create a new list");
-                    int answer = int.Parse(Console.ReadLine());
-
-                    if (answer == 1){
-                        LoadTextFromFile (rootPath, productInfo);
-                    }else {
-                        CreateFolderAndSummary (rootPath);
-                        WriteFile(productInfo, rootPath);
+                if (VerifyForSavedProducts(rootPath) != 0){
+                    bool finish = false;
+                    while (!finish){
+                        System.Console.WriteLine("1 - Load Current Products\n2 - Create a new list");
+                        answer = Enum.Parse<Answer>(Console.ReadLine());
+                        finish = Enum.IsDefined<Answer>(answer);
                     }
                 }         
+                if (answer == Answer.LoadData){
+                    LoadDataFromFile (rootPath, productInfo);
+                }else {
+                    CreateFolderAndSummary (rootPath);
+                    WriteFile(productInfo, rootPath);
+                }
             }
             catch (IOException e){
                 System.Console.WriteLine("Error: " + e.Message);
@@ -37,10 +40,6 @@ namespace StorageManager {
             if (!File.Exists(path+"/out/Summary.csv")){
                 File.Create(path+"/out/Summary.csv");
             }
-            /* / Create a saving file
-            if (!File.Exists(path+"/out/SaveData.csv")){
-                File.Create(path+"/out/SaveData.csv");
-            } */
         }
 
         void WriteFile (List<Product> productInfo, string rootPath){
@@ -71,12 +70,12 @@ namespace StorageManager {
                 } 
         }
 
-        int CheckForItems (string path){
+        int VerifyForSavedProducts (string path){
             using (StreamReader sr = File.OpenText(path+"/out/SaveData.csv")){
                 return int.Parse(sr.ReadLine());
             }
         }
-        void LoadTextFromFile (string path, List<Product> products){
+        void LoadDataFromFile (string path, List<Product> products){
             // Load itens
             string[] summary = File.ReadAllLines(path+"/out/Summary.csv");
             using (StreamReader sr = File.OpenText(path+"/out/Summary.csv")){
