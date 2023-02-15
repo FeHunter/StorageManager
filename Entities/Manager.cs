@@ -26,7 +26,7 @@ namespace StorageManager {
                         }
                     }         
                     if (answer == Answer.LoadData){
-                        LoadDataFromFile (rootPath, productInfo);
+                        LoadDataFromFile (rootPath);
                     }else {
                         CreateFolderAndSummary (rootPath);
                         WriteFile(productInfo, rootPath);
@@ -75,9 +75,15 @@ namespace StorageManager {
                 using (StreamWriter sw = File.CreateText(rootPath+"/out/SaveData.csv")){
                     sw.Write(productInfo.Count);
                     // System.Console.WriteLine("Has saved " + productInfo.Count + " Files.");
-                } 
+                }
 
-                AskToFinish ();
+                Console.WriteLine ("\nItem on the list!\nWant to see the list now? (y/n)");
+                char answer = char.Parse(Console.ReadLine().ToLower());
+                if (answer == 'y'){
+                    LoadDataFromFile (rootPath);
+                }else {
+                    AskToFinish ();
+                }
         }
 
         int VerifyForSavedProducts (string path){
@@ -85,10 +91,11 @@ namespace StorageManager {
                 return int.Parse(sr.ReadLine());
             }
         }
-        void LoadDataFromFile (string path, List<Product> products){
+        void LoadDataFromFile (string path){
             // Load itens
-            string[] summary = File.ReadAllLines(path+"/out/Summary.csv");
             using (StreamReader sr = File.OpenText(path+"/out/Summary.csv")){
+                string[] summary = File.ReadAllLines(path+"/out/Summary.csv");
+                List<Product> products = new List<Product>();
                 foreach (string s in summary){
                     string[] item = s.Split(',');
                     string name = item[0];
@@ -96,12 +103,11 @@ namespace StorageManager {
                     int quantity = int.Parse(item[2]);
                     products.Add (new Product(name, price, quantity));
                 }
-            }
-
-            // Show Items
-            System.Console.WriteLine("Product: ");
-            foreach (Product p in products){
-                System.Console.WriteLine(p);
+                // Show Items
+                System.Console.WriteLine("\nLIST:");
+                foreach (Product p in products){
+                    System.Console.WriteLine(p);
+                }
             }
 
             AskToFinish ();
