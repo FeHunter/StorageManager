@@ -8,28 +8,27 @@ namespace StorageManager {
     class Manager {
 
         bool endProgram = false;
+        WriteFile _writeFile = new WriteFile ();
+        LoadFile _loadFile = new LoadFile();
+        public string Path = @"C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager";
+        public List<Product> ProductList = new List<Product>();
 
         public void StartToManager (){
-            string rootPath = @"C:\Users\Felipe Hunter\Programação\Programs C#\Storage_Manager";
-            List<Product> productInfo = new List<Product>();
-            Answer answer = new Answer();
-
             try {
+                Answer answer = new Answer();
                 while (!endProgram){
-                    if (VerifyForSavedProducts(rootPath) != 0){
-                        bool finish = false;
-                        while (!finish){
-                            System.Console.WriteLine();
-                            System.Console.WriteLine("1 - Load Current Products\n2 - Add new product");
-                            answer = Enum.Parse<Answer>(Console.ReadLine());
-                            finish = Enum.IsDefined<Answer>(answer);
-                        }
-                    }         
+                    do{
+                        System.Console.WriteLine();
+                        System.Console.WriteLine("1 - Load Current Products\n2 - Add new product\n3 - Remove from list");
+                        answer = Enum.Parse<Answer>(Console.ReadLine());
+                    } while ( !Enum.IsDefined<Answer>(answer) );   
+                        
                     if (answer == Answer.LoadData){
-                        LoadDataFromFile (rootPath);
-                    }else {
-                        CreateFolderAndSummary (rootPath);
-                        WriteFile(productInfo, rootPath);
+                        _loadFile.LoadDataFromFile ();
+                    }else if (answer == Answer.AddItem){
+                        _writeFile.WriteFiles (ProductList);
+                    }else if (answer == Answer.RemoveItem){
+                        RemoveFromList ();
                     }
                 }
             }
@@ -38,82 +37,15 @@ namespace StorageManager {
             }
         }
 
-        void CreateFolderAndSummary (string path){
-            // Verificar se pasta já foi criada, se não criar uma
-            if (!Directory.Exists(path+"/out")){
-                Directory.CreateDirectory(path+"/out");
+        void RemoveFromList (){
+            // LoadDataFromFile ();
+            for (int i=0; i < ProductList.Count; i++){
+                System.Console.WriteLine($"{0}: {1}", i, ProductList[i]);
             }
-            // Verificar o arquivo Summary.csv
-            if (!File.Exists(path+"/out/Summary.csv")){
-                File.Create(path+"/out/Summary.csv");
-            }
+            System.Console.WriteLine("Debuggin... Test!!!" + ProductList.Count);
         }
 
-        void WriteFile (List<Product> productInfo, string rootPath){
-            System.Console.WriteLine();
-            System.Console.Write("How many products do you want to register? ");
-                int n = int.Parse(Console.ReadLine());
-                for (int i=0; i < n; i++){
-                    System.Console.Write("Product Name: ");
-                    string name = Console.ReadLine();
-                    System.Console.Write("Product Price: ");
-                    double price = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-                    System.Console.Write("Product Quantity: ");
-                    int quantity = int.Parse(Console.ReadLine());
-
-                    productInfo.Add (new Product(name, price, quantity));
-                    System.Console.WriteLine();
-                }
-
-                foreach (Product p in productInfo){
-                    using (StreamWriter sw = File.AppendText(rootPath+"/out/Summary.csv")){
-                        sw.WriteLine(p);
-                    }
-                }
-
-                // Save quantity of current products created
-                using (StreamWriter sw = File.CreateText(rootPath+"/out/SaveData.csv")){
-                    sw.Write(productInfo.Count);
-                    // System.Console.WriteLine("Has saved " + productInfo.Count + " Files.");
-                }
-
-                Console.WriteLine ("\nItem on the list!\nWant to see the list now? (y/n)");
-                char answer = char.Parse(Console.ReadLine().ToLower());
-                if (answer == 'y'){
-                    LoadDataFromFile (rootPath);
-                }else {
-                    AskToFinish ();
-                }
-        }
-
-        int VerifyForSavedProducts (string path){
-            using (StreamReader sr = File.OpenText(path+"/out/SaveData.csv")){
-                return int.Parse(sr.ReadLine());
-            }
-        }
-        void LoadDataFromFile (string path){
-            // Load itens
-            using (StreamReader sr = File.OpenText(path+"/out/Summary.csv")){
-                string[] summary = File.ReadAllLines(path+"/out/Summary.csv");
-                List<Product> products = new List<Product>();
-                foreach (string s in summary){
-                    string[] item = s.Split(',');
-                    string name = item[0];
-                    double price = double.Parse(item[1]);
-                    int quantity = int.Parse(item[2]);
-                    products.Add (new Product(name, price, quantity));
-                }
-                // Show Items
-                System.Console.WriteLine("\nLIST:");
-                foreach (Product p in products){
-                    System.Console.WriteLine(p);
-                }
-            }
-
-            AskToFinish ();
-        }
-
-        void AskToFinish (){
+        public void AskToFinish (){
             // Ask to finish
             System.Console.WriteLine();
             System.Console.WriteLine("Anything more? y/n");
